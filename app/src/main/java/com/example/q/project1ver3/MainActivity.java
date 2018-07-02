@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    Contacts tab1 = new Contacts();
+                    MyContacts tab1 = new MyContacts();
                     return tab1;
                 case 1:
                     Gallery tab2 = new Gallery();
