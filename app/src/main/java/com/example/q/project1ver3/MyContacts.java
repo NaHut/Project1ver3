@@ -1,9 +1,11 @@
 package com.example.q.project1ver3;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,45 +13,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Inherited;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MyContacts extends Fragment {
 
 
-//    String str =
-//            "[{'name':'배트맨','phone_number':'010-1111-2222'},"+
-//                    "{'name':'슈퍼맨','phone_number':'119'},"+
-//                    "{'name':'앤트맨','phone_number':'112'}]";
+    String str =
+            "[{'name':'배트맨','phone_number':'010-1111-2222'},"+
+                    "{'name':'슈퍼맨','phone_number':'119'},"+
+                    "{'name':'앤트맨','phone_number':'112'}]";
 
-    private final String name[] = {
-            "name1",
-            "name2",
-            "name3",
-            "name4",
-    };
-
-    private final String phone_number[] = {
-            "010-1111-2222",
-            "010-1234-5467",
-            "010-2354-1234",
-            "010-1234-6593",
-    };
 
     //ALL JSON node names
     private static final String TAG_NAME = "name";
     private static final String TAG_PHONE_NUMBER = "phone_number";
 
     private ArrayList<mCreateList> contactList;
-    private Context contactContext;
 
     private class mCreateList {
         private String name;
@@ -70,17 +54,29 @@ public class MyContacts extends Fragment {
         public void setPhone_number(String phone_number) {
             this.phone_number = phone_number;
         }
+
     }
 
-    private void mPrepareDate() {
+    private void jsonParsing() {
 
         contactList = new ArrayList<>();
-        for (int i = 0; i < name.length; i++) {
-            mCreateList mcreateList = new mCreateList();
-            mcreateList.setName(name[i]);
-            mcreateList.setPhone_number(phone_number[i]);
-            contactList.add(mcreateList);
+        try{
+            JSONArray jarray = new JSONArray(str);
+            for(int i=0; i<jarray.length(); i++) {
+                JSONObject jObject = jarray.getJSONObject(i);
+                String name = jObject.getString(TAG_NAME);
+                String phone_number = jObject.getString(TAG_PHONE_NUMBER);
+
+                mCreateList mcreateList = new mCreateList();
+                mcreateList.setName(name);
+                mcreateList.setPhone_number(phone_number);
+
+                contactList.add(mcreateList);
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
         }
+
     }
 
     public class mAdapter extends RecyclerView.Adapter<mAdapter.ViewHolder> {
@@ -129,29 +125,11 @@ public class MyContacts extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        mPrepareDate();
+        jsonParsing();
         mAdapter adapter = new mAdapter(getContext(), contactList);
         recyclerView.setAdapter(adapter);
+
+
         return rootView;
     }
 }
-    //
-//    public void parsingJson(String jsonStr){
-//        try{
-//            JSONArray jarray = new JSONArray(jsonStr);
-//            for(int i =0; i<jarray.length(); i++){
-//                JSONObject jObject = jarray.getJSONObject(i);
-//                String name = jObject.getString(TAG_NAME);
-//                String phone_number = jObject.getString(TAG_PHONE_NUMBER);
-//
-//                HashMap<String,String> map = new HashMap<String, String>();
-//                map.put(TAG_NAME,name);
-//                map.put(TAG_PHONE_NUMBER,phone_number);
-//
-//                contactList.add(map);
-//            }
-//        }catch(JSONException e){
-//            e.printStackTrace();
-//        }
-//    }
-
