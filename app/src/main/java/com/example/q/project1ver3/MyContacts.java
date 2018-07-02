@@ -130,6 +130,7 @@ public class MyContacts extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
+
         return rootView;
     }
 }
