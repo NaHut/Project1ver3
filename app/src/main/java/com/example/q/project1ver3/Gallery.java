@@ -2,6 +2,7 @@ package com.example.q.project1ver3;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Gallery extends Fragment {
@@ -88,17 +90,27 @@ public class Gallery extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, final int i) {
             viewHolder.title.setText(galleryList.get(i).getImage_title());
             viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             viewHolder.img.setImageResource((galleryList.get(i).getImage_ID()));
+
             viewHolder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    //Intent intent = new Intent(context, ChannelDetailActivity.class);
-                    //context.startActivity(intent);
-                    Toast.makeText(context,"You just clicked image!",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,galleryList.get(i).getImage_ID(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, EnlargeImage.class);
+                    ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                    //Bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                    byte[] byteArray = bStream.toByteArray();
+                    intent.putExtra("picture_id", byteArray);
+                    //Bitmap image = v.getDrawingCache();
+                    //Bundle extras = new Bundle();
+                    //extras.putParcelable("picture_id", image);
+                    //intent.putExtras(extras);
+                    startActivity(intent);
+                    //Toast.makeText(context,"You just clicked image!",Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -123,12 +135,11 @@ public class Gallery extends Fragment {
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext().getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<CreateList> createLists = prepareData();
         MyAdapter adapter = new MyAdapter(getContext(), createLists);
         recyclerView.setAdapter(adapter);
         return rootView;
     }
-
 }
