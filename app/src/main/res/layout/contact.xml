@@ -12,6 +12,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
+    <TextView
+        android:id="@+id/empty_notes_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="253dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginLeft="102dp"
+        android:layout_marginRight="101dp"
+        android:layout_marginStart="102dp"
+        android:layout_marginTop="235dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/msg_no_notes"
+        android:textColor="@color/msg_no_notes"
+        android:textSize="@dimen/msg_no_notes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
         android:layout_width="wrap_content"

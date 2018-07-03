@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="hint_enter_phone_number">#89c3c3c3</color>
+    <color name="msg_no_notes">#999</color>
+
 
 </resources>

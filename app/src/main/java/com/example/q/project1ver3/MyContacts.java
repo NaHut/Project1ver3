@@ -3,8 +3,11 @@ package com.example.q.project1ver3;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,53 +19,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.project1ver3.database.DatabaseHelper;
 import com.example.q.project1ver3.database.model.Contact;
+import com.example.q.project1ver3.utils.RecyclerTouchListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class MyContacts extends Fragment {
-
-
     String str =
             "[{'name':'배트맨','phone_number':'010-1111-2222'},"+
                     "{'name':'슈퍼맨','phone_number':'119'},"+
                     "{'name':'앤트맨','phone_number':'112'}]";
 
-
     //ALL JSON node names
     private static final String TAG_NAME = "name";
     private static final String TAG_PHONE_NUMBER = "phone_number";
 
-    private ArrayList<mCreateList> contactList;
+
+    public DatabaseHelper db;
+    private mAdapter adapter;
+    private ArrayList<Contact> contactList = new ArrayList<>();
+    private TextView noContactView;
 
     boolean isFABOpen=false;
     FloatingActionButton fab, fab1, fab2;
-
-    private class mCreateList {
-        private String name;
-        private String phone_number;
-
-        public String getName() {
-            return this.name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPhone_number() {
-            return this.phone_number;
-        }
-
-        public void setPhone_number(String phone_number) {
-            this.phone_number = phone_number;
-        }
-
-    }
 
     private void jsonParsing() {
 
@@ -74,11 +59,12 @@ public class MyContacts extends Fragment {
                 String name = jObject.getString(TAG_NAME);
                 String phone_number = jObject.getString(TAG_PHONE_NUMBER);
 
-                mCreateList mcreateList = new mCreateList();
-                mcreateList.setName(name);
-                mcreateList.setPhone_number(phone_number);
+                Contact contact = new Contact();
+                contact.setName(name);
+                contact.setPhone_number(phone_number);
 
-                contactList.add(mcreateList);
+                createContact(name,phone_number);
+                contactList.add(contact);
             }
         }catch(JSONException e){
             e.printStackTrace();
@@ -87,10 +73,10 @@ public class MyContacts extends Fragment {
     }
 
     public class mAdapter extends RecyclerView.Adapter<mAdapter.ViewHolder> {
-        private ArrayList<mCreateList> contactList;
+        private ArrayList<Contact> contactList;
         private Context context;
 
-        public mAdapter(Context context, ArrayList<mCreateList> contactList) {
+        public mAdapter(Context context, ArrayList<Contact> contactList) {
             this.contactList = contactList;
             this.context = context;
         }
@@ -126,18 +112,19 @@ public class MyContacts extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.contact, container, false);
 
+        //
+        TextView noContactsView = (TextView)rootView.findViewById(R.id.empty_notes_view);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        jsonParsing();
+        //database initialized
+        db = new DatabaseHelper(getActivity());
+        //수정필요
+        contactList.addAll(db.getAllContacts());
 
-        mAdapter adapter = new mAdapter(getContext(), contactList);
-        recyclerView.setAdapter(adapter);
+        jsonParsing();
 
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab1);
@@ -152,8 +139,6 @@ public class MyContacts extends Fragment {
                         @Override
                         public void onClick(View view){
                             showContactDialog(false,null,-1);
-//                            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                                    .setAction("Action", null).show();
                         }
                     });
                 }else{
@@ -161,6 +146,23 @@ public class MyContacts extends Fragment {
                 }
             }
         });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new mAdapter(getContext(), contactList);
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
+                recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                showActionsDialog(position);
+            }
+        }));
 
         return rootView;
     }
@@ -179,7 +181,6 @@ public class MyContacts extends Fragment {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity().getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.contact_dialog, null);
 
-        //여기 이상
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getActivity());
         alertDialogBuilderUserInput.setView(view);
 
@@ -229,17 +230,79 @@ public class MyContacts extends Fragment {
                     alertDialog.dismiss();
                 }
 
-//                // check if user updating note
-//                if (shouldUpdate && note != null) {
-//                    // update note by it's id
-//                    updateNote(inputNote.getText().toString(), position);
-//                } else {
-//                    // create new note
-//                    createNote(inputNote.getText().toString());
-//                }
+                // check if user updating note
+                if (shouldUpdate && note != null) {
+                    // update note by it's id
+                    updateContact(inputName.getText().toString(),inputPhoneNumber.getText().toString(), position);
+                } else {
+                    // create new note
+                    createContact(inputName.getText().toString(), inputPhoneNumber.getText().toString());
+                }
             }
         });
     }
 
+    private void showActionsDialog(final int position) {
+        CharSequence colors[] = new CharSequence[]{"Edit", "Delete"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose option");
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    showContactDialog(true, contactList.get(position), position);
+                } else {
+                    deleteContact(position);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void createContact(String name, String phone_number){
+
+        if(db.isDuplicate(name)){
+            return;
+        }
+        long id = db.insertContact(name,phone_number);
+
+        Contact contact = db.getContact(id);
+
+        if(contact != null){
+            contactList.add(0,contact);
+            if(adapter == null){
+
+            }
+             else{
+                adapter.notifyDataSetChanged();
+            }
+
+        }
+    }
+    private void updateContact(String name, String phone_number, int position) {
+        Contact contact = contactList.get(position);
+        // updating note text
+        contact.setName(name);
+        contact.setPhone_number(phone_number);
+
+        // updating note in db
+        db.updateContact(contact);
+
+        // refreshing the list
+        contactList.set(position, contact);
+        adapter.notifyItemChanged(position);
+
+
+    }
+    private void deleteContact(int position) {
+        // deleting the note from db
+        db.deleteContact(contactList.get(position));
+
+        // removing the note from the list
+        contactList.remove(position);
+        adapter.notifyItemRemoved(position);
+
+    }
 
 }
