@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".EnlargedImageActivity"/>
+        <activity android:name=".worldcupActivity"/>
+        <activity android:name=".winnerActivity"/>
     </application>
 
 </manifest>
