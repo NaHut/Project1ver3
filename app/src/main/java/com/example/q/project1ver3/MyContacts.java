@@ -1,18 +1,22 @@
 package com.example.q.project1ver3;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +38,9 @@ public class MyContacts extends Fragment {
     private static final String TAG_PHONE_NUMBER = "phone_number";
 
     private ArrayList<mCreateList> contactList;
+
+    boolean isFABOpen=false;
+    FloatingActionButton fab, fab1, fab2;
 
     private class mCreateList {
         private String name;
@@ -119,18 +126,52 @@ public class MyContacts extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.contact, container, false);
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(android.R.id.list);
+
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         jsonParsing();
+
         mAdapter adapter = new mAdapter(getContext(), contactList);
         recyclerView.setAdapter(adapter);
 
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                    fab1.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view){
+
+                        }
+                    });
+                }else{
+                    closeFABMenu();
+                }
+            }
+        });
 
         return rootView;
     }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_75));
+        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_145));
+    }
+    private void closeFABMenu(){
+        isFABOpen=false;
+        fab1.animate().translationY(0);
+        fab2.animate().translationY(0);
+    }
+
 }
