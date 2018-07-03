@@ -1,6 +1,7 @@
 package com.example.q.project1ver3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Gallery extends Fragment {
@@ -93,17 +94,24 @@ public class Gallery extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, final int i) {
             viewHolder.title.setText(galleryList.get(i).getImage_title());
             viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             viewHolder.img.setImageResource((galleryList.get(i).getImage_ID()));
             viewHolder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
-                    //Intent intent = new Intent(context, ChannelDetailActivity.class);
-                    //context.startActivity(intent);
-                    Toast.makeText(context,"You just clicked image!",Toast.LENGTH_SHORT).show();
+                    //Integer raw = galleryList.get(i).getImage_ID();
+                    Context context = getActivity();
+                    Intent intent = new Intent(context, EnlargedImageActivity.class);
+                    ByteArrayOutputStream bStream  = new ByteArrayOutputStream();
+                    byte[] byteArray = bStream.toByteArray();
+                    //intent.putExtra("picture_id", raw);
+                    intent.putExtra("picture_id", galleryList.get(i).getImage_ID());
+                    //Toast.makeText(context,(galleryList.get(i).getImage_ID()),Toast.LENGTH_SHORT).show();
+                    context.startActivity(intent);
+//                    getActivity().finish();
+                    //startActivity(intent);
                 }
             });
         }
