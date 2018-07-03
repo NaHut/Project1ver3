@@ -2,21 +2,21 @@ package com.example.q.project1ver3;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.q.project1ver3.database.model.Contact;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -151,6 +151,7 @@ public class MyContacts extends Fragment {
                     fab1.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View view){
+                            showContactDialog(false,null,-1);
 //                            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                    .setAction("Action", null).show();
                         }
@@ -174,7 +175,71 @@ public class MyContacts extends Fragment {
         fab1.animate().translationY(0);
         fab2.animate().translationY(0);
     }
+    private void showContactDialog(final boolean shouldUpdate, final Contact note, final int position) {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity().getApplicationContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.contact_dialog, null);
 
+        //여기 이상
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getActivity());
+        alertDialogBuilderUserInput.setView(view);
+
+        final EditText inputPhoneNumber = view.findViewById(R.id.note);
+        final EditText inputName = view.findViewById(R.id.note_name);
+        TextView dialogTitle = view.findViewById(R.id.dialog_title);
+        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_contact_title) : getString(R.string.lbl_edit_contact_title));
+
+        if (shouldUpdate && note != null) {
+            inputPhoneNumber.setText(note.getPhone_number());
+            inputName.setText(note.getName());
+        }
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton(shouldUpdate ? "update" : "save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+
+                    }
+                })
+                .setNegativeButton("cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show toast message when no text is entered
+                if (TextUtils.isEmpty(inputPhoneNumber.getText().toString()) &&TextUtils.isEmpty(inputName.getText().toString()) ) {
+                    Toast.makeText(v.getContext(), "Enter please!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (TextUtils.isEmpty(inputPhoneNumber.getText().toString())) {
+                    Toast.makeText(v.getContext(), "Enter Phone Number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (TextUtils.isEmpty(inputName.getText().toString())) {
+                    Toast.makeText(v.getContext(), "Enter Name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                 else {
+                    alertDialog.dismiss();
+                }
+
+//                // check if user updating note
+//                if (shouldUpdate && note != null) {
+//                    // update note by it's id
+//                    updateNote(inputNote.getText().toString(), position);
+//                } else {
+//                    // create new note
+//                    createNote(inputNote.getText().toString());
+//                }
+            }
+        });
+    }
 
 
 }
