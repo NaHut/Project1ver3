@@ -8,5 +8,7 @@
     <dimen name="standard_145">145dp</dimen>
     <dimen name="lbl_new_contact_title">20sp</dimen>
     <dimen name="input_new_phone_number">20sp</dimen>
+    <dimen name="msg_no_notes">26sp</dimen>
+    <dimen name="margin_top_no_notes">120dp</dimen>
 
 </resources>

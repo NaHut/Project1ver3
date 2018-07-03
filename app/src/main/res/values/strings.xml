@@ -9,5 +9,6 @@
     <string name="hint_enter_name">Enter your name!</string>
     <string name="hint_enter_phone_number">Enter your phone_number!</string>
     <string name="lbl_edit_contact_title">Edit contact</string>
+    <string name="msg_no_notes">No contacts found!</string>
 
 </resources>
