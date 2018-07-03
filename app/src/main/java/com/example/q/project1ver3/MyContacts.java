@@ -2,21 +2,21 @@ package com.example.q.project1ver3;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.q.project1ver3.database.model.Contact;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,19 +175,22 @@ public class MyContacts extends Fragment {
         fab1.animate().translationY(0);
         fab2.animate().translationY(0);
     }
-    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
+    private void showContactDialog(final boolean shouldUpdate, final Contact note, final int position) {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity().getApplicationContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.contact_dialog, null);
 
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(MainActivity.this);
+        //여기 이상
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getActivity());
         alertDialogBuilderUserInput.setView(view);
 
-        final EditText inputNote = view.findViewById(R.id.note);
+        final EditText inputPhoneNumber = view.findViewById(R.id.note);
+        final EditText inputName = view.findViewById(R.id.note_name);
         TextView dialogTitle = view.findViewById(R.id.dialog_title);
-        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_contact_title) : getString(R.string.lbl_edit_contact_title));
 
         if (shouldUpdate && note != null) {
-            inputNote.setText(note.getNote());
+            inputPhoneNumber.setText(note.getPhone_number());
+            inputName.setText(note.getName());
         }
         alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -210,21 +213,30 @@ public class MyContacts extends Fragment {
             @Override
             public void onClick(View v) {
                 // Show toast message when no text is entered
-                if (TextUtils.isEmpty(inputNote.getText().toString())) {
-                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(inputPhoneNumber.getText().toString()) &&TextUtils.isEmpty(inputName.getText().toString()) ) {
+                    Toast.makeText(v.getContext(), "Enter please!", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                }
+                else if (TextUtils.isEmpty(inputPhoneNumber.getText().toString())) {
+                    Toast.makeText(v.getContext(), "Enter Phone Number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (TextUtils.isEmpty(inputName.getText().toString())) {
+                    Toast.makeText(v.getContext(), "Enter Name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                 else {
                     alertDialog.dismiss();
                 }
 
-                // check if user updating note
-                if (shouldUpdate && note != null) {
-                    // update note by it's id
-                    updateNote(inputNote.getText().toString(), position);
-                } else {
-                    // create new note
-                    createNote(inputNote.getText().toString());
-                }
+//                // check if user updating note
+//                if (shouldUpdate && note != null) {
+//                    // update note by it's id
+//                    updateNote(inputNote.getText().toString(), position);
+//                } else {
+//                    // create new note
+//                    createNote(inputNote.getText().toString());
+//                }
             }
         });
     }
