@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.q.project1ver3.database.model.Contact;
+import com.example.q.project1ver3.utils.RecyclerTouchListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -162,6 +163,18 @@ public class MyContacts extends Fragment {
             }
         });
 
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
+                recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                showActionsDialog(position);
+            }
+        }));
+
         return rootView;
     }
 
@@ -239,6 +252,24 @@ public class MyContacts extends Fragment {
 //                }
             }
         });
+    }
+
+    private void showActionsDialog(final int position) {
+        CharSequence colors[] = new CharSequence[]{"Edit", "Delete"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose option");
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                if (which == 0) {
+//                    showNoteDialog(true, notesList.get(position), position);
+//                } else {
+//                    deleteNote(position);
+//                }
+            }
+        });
+        builder.show();
     }
 
 
