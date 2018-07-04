@@ -1,6 +1,7 @@
 package com.example.q.project1ver3;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -74,12 +75,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private LatLng[] mLikelyPlaceLatLngs;
 
     //Markers
-    private static final LatLng leftKaist = new LatLng(36.373678,127.358465);
-    private static final LatLng rightKaist = new LatLng(36.373788,127.359246);
+    private static final LatLng kaist1 = new LatLng(36.375153,127.363516);
+    private static final LatLng kaist2 = new LatLng(36.372304,127.360672);
 
     private Marker mLeftKaist;
     private Marker mRightKaist;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,13 +156,13 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
         //add some markers
         mLeftKaist = mMap.addMarker(new MarkerOptions()
-                .position(leftKaist)
-                .title("left kaist"));
+                .position(kaist1)
+                .title("과학로"));
         mLeftKaist.setTag(0);
 
         mRightKaist = mMap.addMarker(new MarkerOptions()
-                .position(rightKaist)
-                .title("right kaist"));
+                .position(kaist2)
+                .title("KAIST North Stadium"));
         mRightKaist.setTag(0);
 
         // Use a custom info window adapter to handle multiple lines of text in the
@@ -186,6 +186,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
                 TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
                 snippet.setText(marker.getSnippet());
+
+                Intent myIntent = new Intent(MapsActivityCurrentPlace.this, StreetViewActivity.class);
+                myIntent.putExtra("lat",marker.getPosition().latitude);
+                myIntent.putExtra("lng",marker.getPosition().longitude);
+                MapsActivityCurrentPlace.this.startActivity(myIntent);
 
                 return infoWindow;
             }
