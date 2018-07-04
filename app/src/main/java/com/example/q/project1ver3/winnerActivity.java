@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class winnerActivity extends Activity {
     @Override
@@ -28,6 +29,8 @@ public class winnerActivity extends Activity {
                 winnerActivity.this.finish();
             }
         });
+        TextView text  = (TextView) findViewById(R.id.choice);
+        text.setText(" THE WINNER !");
         ImageView imageView = (ImageView)findViewById(R.id.showwinner);
         int id = getIntent().getIntExtra("winner", 0);
         imageView.setImageResource(id);

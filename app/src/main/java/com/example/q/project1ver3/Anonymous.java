@@ -20,6 +20,7 @@ public class Anonymous extends Fragment {
             @Override
             public void onClick(View view) {
                 Context context = getContext();
+                //Intent intent = new Intent(context, VideoDemoActivity.class);
                 Intent intent = new Intent(context, VideoDemoActivity.class);
                 context.startActivity(intent);
             }

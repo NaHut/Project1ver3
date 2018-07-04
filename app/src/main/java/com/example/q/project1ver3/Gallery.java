@@ -30,6 +30,9 @@ public class Gallery extends Fragment {
             "Img11",
             "Img12",
             "Img13",
+            "Img14",
+            "Img15",
+            "Img16"
     };
     private final Integer image_ids[] = {
             R.drawable.img1,
@@ -45,6 +48,9 @@ public class Gallery extends Fragment {
             R.drawable.img11,
             R.drawable.img12,
             R.drawable.img13,
+            R.drawable.img14,
+            R.drawable.img15,
+            R.drawable.img16
     };
     public class CreateList {
         private String image_title;
@@ -136,7 +142,7 @@ public class Gallery extends Fragment {
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(),3);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<CreateList> createLists = prepareData();
         MyAdapter adapter = new MyAdapter(getContext(), createLists);
