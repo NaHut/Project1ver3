@@ -16,6 +16,8 @@ public class Anonymous extends Fragment {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.anonymous, container, false);
         Button gotobtn = (Button) rootView.findViewById(R.id.worldcupbtn);
+        Button mapBtn =(Button) rootView.findViewById(R.id.map_btn);
+
         gotobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -24,6 +26,16 @@ public class Anonymous extends Fragment {
                 context.startActivity(intent);
             }
         });
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                Intent intent = new Intent(context, MapsActivityCurrentPlace.class);
+                context.startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 }

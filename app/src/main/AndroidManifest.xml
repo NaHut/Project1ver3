@@ -3,8 +3,12 @@
     xmlns:uses-permissionandroid="http://schemas.android.com/tools"
     xmlns:applicationandroid="http://schemas.android.com/apk/res-auto"
     package="com.example.q.project1ver3">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name ="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--
+             The API key for Google Maps-based APIs.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAnuqzogcZffunXSKxPDXmBWwNvOyg8bF0" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -26,6 +40,7 @@
         <activity android:name=".worldcupActivity"/>
         <activity android:name=".winnerActivity"/>
         <activity android:name=".VideoDemoActivity" />
+        <activity android:name=".MapsActivityCurrentPlace"/>
     </application>
 
 </manifest>
