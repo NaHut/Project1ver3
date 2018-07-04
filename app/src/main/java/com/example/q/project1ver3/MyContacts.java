@@ -33,8 +33,8 @@ import java.util.ArrayList;
 public class MyContacts extends Fragment {
     String str =
             "[{'name':'배트맨','phone_number':'010-1111-2222'},"+
-                    "{'name':'슈퍼맨','phone_number':'119'},"+
-                    "{'name':'앤트맨','phone_number':'112'}]";
+                    "{'name':'슈퍼맨','phone_number':'010-1234-8590'},"+
+                    "{'name':'앤트맨','phone_number':'019-064-3945'}]";
 
     //ALL JSON node names
     private static final String TAG_NAME = "name";
@@ -44,7 +44,6 @@ public class MyContacts extends Fragment {
     public DatabaseHelper db;
     private mAdapter adapter;
     private ArrayList<Contact> contactList = new ArrayList<>();
-    private TextView noContactView;
 
     boolean isFABOpen=false;
     FloatingActionButton fab, fab1, fab2;
@@ -115,7 +114,6 @@ public class MyContacts extends Fragment {
         View rootView = inflater.inflate(R.layout.contact, container, false);
 
         //
-        TextView noContactsView = (TextView)rootView.findViewById(R.id.empty_notes_view);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
