@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_picture" />
-                            <entry key="sourceFile" value="C:\Users\q\Desktop\picture.svg" />
+                            <entry key="outputName" value="ic_map" />
+                            <entry key="sourceFile" value="C:\Users\q\Desktop\map.svg" />
                           </map>
                         </option>
                       </PersistentState>

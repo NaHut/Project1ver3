@@ -2,6 +2,9 @@ package com.example.q.project1ver3;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,37 +20,37 @@ import java.util.ArrayList;
 
 public class Gallery extends Fragment {
     private final String image_titles[] = {
-            "Img1",
-            "Img2",
-            "Img3",
-            "Img4",
-            "Img5",
-            "Img6",
-            "Img7",
-            "Img8",
-            "Img9",
-            "Img10",
-            "Img11",
-            "Img12",
-            "Img13",
-            "Img14",
-            "Img15",
-            "Img16"
+            "윤소영",
+            "전형준",
+            "윤소영2",
+            "전형준2",
+            "Splash_Screen",
+            "전형준3",
+            "Pizza",
+            "Cat",
+            "bear",
+            "cake",
+            "something",
+            "Chicken",
+            "LoL",
+            "marbles",
+            "penguin",
+            "Sample"
     };
     private final Integer image_ids[] = {
-            R.drawable.img1,
-            R.drawable.img2,
-            R.drawable.img3,
-            R.drawable.img4,
-            R.drawable.img5,
-            R.drawable.img6,
-            R.drawable.img7,
-            R.drawable.img8,
-            R.drawable.img9,
-            R.drawable.img10,
-            R.drawable.img11,
-            R.drawable.img12,
-            R.drawable.img13,
+            R.drawable.soyoung,
+            R.drawable.heongjun1,
+            R.drawable.soyoung2,
+            R.drawable.heongjun4,
+            R.drawable.sample,
+            R.drawable.heongjun3,
+            R.drawable.pizza,
+            R.drawable.cat,
+            R.drawable.bear,
+            R.drawable.cake,
+            R.drawable.capture,
+            R.drawable.chicken,
+            R.drawable.lol,
             R.drawable.img14,
             R.drawable.img15,
             R.drawable.img16
@@ -55,14 +58,13 @@ public class Gallery extends Fragment {
     public class CreateList {
         private String image_title;
         private Integer image_id;
-
         public String getImage_title() {
             return image_title;
         }
-
         public void setImage_title(String android_version_name) {
             this.image_title = android_version_name;
         }
+
 
         public Integer getImage_ID()
         {
@@ -78,6 +80,7 @@ public class Gallery extends Fragment {
 
         ArrayList<CreateList> theimage = new ArrayList<>();
         for(int i = 0; i< image_titles.length; i++){
+            Bitmap bmp;
             CreateList createList = new CreateList();
             createList.setImage_title(image_titles[i]);
             createList.setImage_ID(image_ids[i]);
@@ -101,8 +104,11 @@ public class Gallery extends Fragment {
 
         @Override
         public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, final int i) {
+            final int THUMBSIZE = 64;
+            final int id;
             viewHolder.title.setText(galleryList.get(i).getImage_title());
             viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //display only thumbnail versions of image.
             viewHolder.img.setImageResource((galleryList.get(i).getImage_ID()));
             viewHolder.img.setOnClickListener(new View.OnClickListener() {
                 @Override

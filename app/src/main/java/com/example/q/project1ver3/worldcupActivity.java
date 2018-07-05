@@ -32,16 +32,16 @@ public class worldcupActivity extends Activity{
             R.drawable.howook,
             R.drawable.jaeyoung,
             R.drawable.seongwong,
-            R.drawable.yoontak,
+            R.drawable.new2,
             R.drawable.yoontak2,
             R.drawable.guhan2,
-            R.drawable.heongjun,
+            R.drawable.eunsong,
             R.drawable.hosoung2,
             R.drawable.soyoung,
-            R.drawable.soyoung2,
+            R.drawable.new1,
             R.drawable.heongjun1,
-            R.drawable.heongjun2,
-            R.drawable.heongjun3,
+            R.drawable.heongjun4,
+            R.drawable.eunsong2,
     };
     public int setmCnt(int mCnt) {
         int result;
