@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Project1ver3</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
+    <string name="tab_text_1">Phone number</string>
+    <string name="tab_text_2">Gallery</string>
+    <string name="tab_text_3">Games and more!</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="lbl_new_contact_title">New contact</string>

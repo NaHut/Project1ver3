@@ -22,6 +22,7 @@ public class worldcupActivity extends Activity{
     ArrayList<Integer> mIdList4 = new ArrayList<>();
     ArrayList<Integer> mIdList2 = new ArrayList<>();
 
+    public TextView text;
     private int mCnt = 0;
 
     private final Integer image_ids[] = {
@@ -45,37 +46,43 @@ public class worldcupActivity extends Activity{
     public int setmCnt(int mCnt) {
         int result;
         if (mIdList16.size() == 8) {
+            text.setText("Round 8");
             return 0;
         }
         else if (mIdList16.size() == 4) {
+            text.setText("Round 4");
             return 0;
         }
         else if (mIdList16.size() == 2) {
+            text.setText("Round 2");
             return 0;
         }
         result = mCnt + 1;
         return result;
     }
-    public void gotoWinner(ArrayList<Integer> arr) {
-        if (arr.size() == 2) {
+    public int gotoWinner(ArrayList<Integer> arr) {
+        if (arr.size() == 1) {
             Intent intent = new Intent(worldcupActivity.this, winnerActivity.class);
             intent.putExtra("winner", mIdList16.get(0));
             worldcupActivity.this.startActivity(intent);
             worldcupActivity.this.finish();
+            return 0;
         }
+        return 1;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.worldcup);
+        text = (TextView) findViewById(R.id.status);
         final ImageView leftbtn = (ImageView) findViewById(R.id.profimg1);
         final ImageView rightbtn = (ImageView) findViewById(R.id.profimg2);
-        //final TextView text = (TextView) findViewById(R.id.status);
+        text.setText("Round 16");
         for (int i = 0; i < 16; i++) {
             mIdList16.add(image_ids[i]);
         }
         //shuffle the element
-        //Collections.shuffle(mIdList16);
+        Collections.shuffle(mIdList16);
         //GoBack button
         Button btnBack = (Button) findViewById(R.id.backtotab3);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +101,10 @@ public class worldcupActivity extends Activity{
             public void onClick(View view) {
                 mIdList16.remove(mCnt + 1);
                 mCnt = setmCnt(mCnt);
-                gotoWinner(mIdList16);
-                leftbtn.setImageResource(mIdList16.get(mCnt));
-                rightbtn.setImageResource(mIdList16.get(mCnt+1));
+                if (gotoWinner(mIdList16) == 1) {
+                    leftbtn.setImageResource(mIdList16.get(mCnt));
+                    rightbtn.setImageResource(mIdList16.get(mCnt + 1));
+                }
             }
         });
         // RIGHT BUTTON
@@ -105,9 +113,10 @@ public class worldcupActivity extends Activity{
             public void onClick(View view) {
                 mIdList16.remove(mCnt);
                 mCnt = setmCnt(mCnt);
-                gotoWinner(mIdList16);
-                leftbtn.setImageResource(mIdList16.get(mCnt));
-                rightbtn.setImageResource(mIdList16.get(mCnt+1));
+                if (gotoWinner(mIdList16) == 1 ) {
+                    leftbtn.setImageResource(mIdList16.get(mCnt));
+                    rightbtn.setImageResource(mIdList16.get(mCnt + 1));
+                }
             }
         });
     }
