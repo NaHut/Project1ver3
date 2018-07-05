@@ -74,13 +74,16 @@ public class worldcupActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.worldcup);
+
         text = (TextView) findViewById(R.id.status);
         final ImageView leftbtn = (ImageView) findViewById(R.id.profimg1);
         final ImageView rightbtn = (ImageView) findViewById(R.id.profimg2);
         text.setText("Round 16");
+
         for (int i = 0; i < 16; i++) {
             mIdList16.add(image_ids[i]);
         }
+
         //shuffle the element
         Collections.shuffle(mIdList16);
         //GoBack button
