@@ -54,7 +54,7 @@ public class worldcupActivity extends Activity{
             return 0;
         }
         else if (mIdList16.size() == 2) {
-            text.setText("Round 2");
+            text.setText("FINAL!!");
             return 0;
         }
         result = mCnt + 1;

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         //added to inset ICONS
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_phone);
@@ -54,6 +54,28 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_game);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.setOnTabSelectedListener(
+//                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+//                    @Override
+//                    public void onTabSelected(TabLayout.Tab tab) {
+//                        super.onTabSelected(tab);
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_phone_select);
+//                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_picture_select);
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_game_select);
+//                    }
+//                    @Override
+//                    public void onTabUnselected(TabLayout.Tab tab) {
+//                        super.onTabUnselected(tab);
+//                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_phone);
+//                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_picture);
+//                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_game);
+//                    }
+//                    @Override
+//                    public void onTabReselected(TabLayout.Tab tab) {
+//                        super.onTabReselected(tab);
+//                    }
+//                }
+//        );
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
     }
