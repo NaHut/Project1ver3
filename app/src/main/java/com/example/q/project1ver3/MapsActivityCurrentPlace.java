@@ -77,9 +77,16 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     //Markers
     private static final LatLng kaist1 = new LatLng(36.375153,127.363516);
     private static final LatLng kaist2 = new LatLng(36.372304,127.360672);
+    //어은동
+    private static final LatLng kaist3 = new LatLng(36.373119,127.359204);
+    //오리연못
+    private static final LatLng kaist4 = new LatLng(36.368412,127.362777);
 
-    private Marker mLeftKaist;
-    private Marker mRightKaist;
+    private Marker mKaist1;
+    private Marker mKaist2;
+    private Marker mKaist3;
+    private Marker mKaist4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,15 +162,26 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         mMap = map;
 
         //add some markers
-        mLeftKaist = mMap.addMarker(new MarkerOptions()
+        mKaist1 = mMap.addMarker(new MarkerOptions()
                 .position(kaist1)
                 .title("과학로"));
-        mLeftKaist.setTag(0);
+        mKaist1.setTag(0);
 
-        mRightKaist = mMap.addMarker(new MarkerOptions()
+        mKaist2 = mMap.addMarker(new MarkerOptions()
                 .position(kaist2)
                 .title("KAIST North Stadium"));
-        mRightKaist.setTag(0);
+        mKaist2.setTag(0);
+
+        mKaist3 = mMap.addMarker(new MarkerOptions()
+                .position(kaist3)
+                .title("어은동"));
+        mKaist3.setTag(0);
+
+        mKaist4 = mMap.addMarker(new MarkerOptions()
+                .position(kaist4)
+                .title("오리연못"));
+        mKaist4.setTag(0);
+
 
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
