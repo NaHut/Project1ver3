@@ -23,7 +23,7 @@ public class Anonymous extends Fragment {
             public void onClick(View view) {
                 Context context = getContext();
                 //Intent intent = new Intent(context, VideoDemoActivity.class);
-                Intent intent = new Intent(context, VideoDemoActivity.class);
+                Intent intent = new Intent(context, worldcupActivity.class);
                 context.startActivity(intent);
             }
         });

@@ -36,11 +36,6 @@
             android:layout_height="150dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/ic_launcher_round" />
-        <TextView
-            android:id = "@+id/status"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:gravity = "center" />
 
     </LinearLayout>
 
